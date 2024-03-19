@@ -10,19 +10,17 @@ from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition
 from launch_ros.actions import Node, SetParameter
 
-from nav2_common.launch import ReplaceString
-
 def launch_setup(context, *args, **kwargs):
     rae_description_pkg = get_package_share_directory('rae_description')
     ros_gz_sim_pkg = get_package_share_directory('ros_gz_sim')
-    namespace = LaunchConfiguration('namespace')
-    enable_localization = LaunchConfiguration('enable_localization')
+    rae_gazebo_pkg = get_package_share_directory('rae_gazebo')
+
     world_file = LaunchConfiguration('sdf_file').perform(context)
     print(f'world_file: {world_file}')
 
-    ns_srt = namespace.perform(context)
-    ns_srt = f'/{ns_srt}' if ns_srt else ''
-    rae_name = 'rae' if ns_srt else ns_srt + '/rae'
+    spawn_robot = LaunchConfiguration('spawn_robot')
+    namespace = LaunchConfiguration('namespace')
+    enable_localization = LaunchConfiguration('enable_localization')
 
     return [
         SetEnvironmentVariable(
@@ -43,18 +41,7 @@ def launch_setup(context, *args, **kwargs):
             }.items()
         ),
 
-        # RSP Node
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                os.path.join(rae_description_pkg, 'launch', 'rsp.launch.py')
-            ]),
-            launch_arguments={
-                'use_sim_time': 'True',
-                'namespace': namespace
-            }.items()
-        ),
-
-        # ros_gz_bridge
+        # ros_gz_bridge with common params
         Node(
             package='ros_gz_bridge',
             namespace=LaunchConfiguration('namespace'),
@@ -63,53 +50,21 @@ def launch_setup(context, *args, **kwargs):
                 'expand_gz_topic_names': True,
                 'use_sim_time': True,
                 'config_file': os.path.join(get_package_share_directory(
-                    'rae_gazebo'),'config', 'gz_bridge.yaml')
+                    'rae_gazebo'),'config', 'gz_bridge_common.yaml')
             }],
             output='screen'
         ),
 
-        # Ignition Gazebo - Spawn Entity
-        Node(
-            package='ros_gz_sim',
-            namespace=LaunchConfiguration('namespace'),
-            executable='create',
-            arguments=[
-                "-name", rae_name,
-                "-allow_renaming", "true",
-                '-topic', 'robot_description',
-            ],
-            output='screen'
-        ),
-
-        # Activate diff controller
-        Node(
-            package='controller_manager',
-            namespace=LaunchConfiguration('namespace'),
-            executable='spawner',
-            arguments=['diff_controller',
-                       '--controller-manager', f'{ns_srt}/controller_manager'],
-        ),
-
-        # Activate joint state broadcaster
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            namespace=LaunchConfiguration('namespace'),
-            arguments=['joint_state_broadcaster',
-                       '--controller-manager', f'{ns_srt}/controller_manager'],
-        ),
-
-        # Activate EKF
-        Node(
-            condition=IfCondition(enable_localization),
-            package='robot_localization',
-            executable='ekf_node',
-            name='ekf_filter_node',
-            namespace=LaunchConfiguration('namespace'),
-            output='screen',
-            parameters=[{'use_sim_time': True},
-                        os.path.join(get_package_share_directory(
-                        'rae_hw'), 'config', 'ekf.yaml')],
+        # Spawn single rae
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(rae_gazebo_pkg, 'launch', 'spawn_rae.launch.py')
+            ),
+            launch_arguments={
+                'namespace': namespace,
+                'enable_localization': enable_localization
+            }.items(),
+            condition=IfCondition(spawn_robot)
         ),
 
         # Set all nodes to use simulation time
@@ -122,8 +77,9 @@ def generate_launch_description():
     rae_gazebo_pkg = get_package_share_directory('rae_gazebo')
     declared_arguments = [
         DeclareLaunchArgument('namespace', default_value=''),
+        DeclareLaunchArgument('spawn_robot', default_value='true'),
         DeclareLaunchArgument('enable_localization', default_value='true'),
-        DeclareLaunchArgument('sdf_file', default_value=f"-r {os.path.join(rae_gazebo_pkg, 'worlds', 'world_demo.sdf')}"),
+        DeclareLaunchArgument('sdf_file', default_value=f'-r {os.path.join(rae_gazebo_pkg, "worlds", "world_demo.sdf")}'),
     ]
 
     return LaunchDescription(

@@ -1,39 +1,34 @@
-- topic_name: "/clock"
-  ros_type_name: "rosgraph_msgs/msg/Clock"
-  gz_type_name: "ignition.msgs.Clock"
-  direction: GZ_TO_ROS
-
-- topic_name: "/rae/right/image_raw"
+- topic_name: "rae/right/image_raw"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "ignition.msgs.Image"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/right/camera_info"
+- topic_name: "rae/right/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "ignition.msgs.CameraInfo"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/stereo_back/image_raw"
+- topic_name: "rae/stereo_back/image_raw"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "ignition.msgs.Image"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/stereo_back/camera_info"
+- topic_name: "rae/stereo_back/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "ignition.msgs.CameraInfo"
   direction: GZ_TO_ROS
   
-- topic_name: "/rae/stereo_front/image_raw"
+- topic_name: "rae/stereo_front/image_raw"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "ignition.msgs.Image"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/stereo_front/camera_info"
+- topic_name: "rae/stereo_front/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "ignition.msgs.CameraInfo"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/imu/data"
+- topic_name: "rae/imu/data"
   ros_type_name: "sensor_msgs/msg/Imu"
   gz_type_name: "ignition.msgs.IMU"
   direction: GZ_TO_ROS
