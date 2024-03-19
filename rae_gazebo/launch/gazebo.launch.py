@@ -37,7 +37,7 @@ def launch_setup(context, *args, **kwargs):
             ]),
             launch_arguments={
                 'gz_args': world_file,
-                'use_sim_time': 'True'
+                'use_sim_time': 'true',
             }.items()
         ),
 

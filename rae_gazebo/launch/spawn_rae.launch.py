@@ -36,7 +36,7 @@ def launch_setup(context, *args, **kwargs):
                 os.path.join(rae_description_pkg, 'launch', 'rsp.launch.py')
             ]),
             launch_arguments={
-                'use_sim_time': 'True',
+                'use_sim_time': 'true',
                 'namespace': namespace
             }.items()
         ),
@@ -97,7 +97,7 @@ def launch_setup(context, *args, **kwargs):
             condition=IfCondition(enable_localization),
             package='robot_localization',
             executable='ekf_node',
-            name='ekf_filter_node',
+            name='ekf_filter_node', 
             namespace=LaunchConfiguration('namespace'),
             parameters=[{'use_sim_time': True},
                         os.path.join(get_package_share_directory(

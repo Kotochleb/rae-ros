@@ -25,7 +25,7 @@ def launch_setup(context, *args, **kwargs):
                 'robot_description': Command(['xacro ', xacro_path,
                                               ' sim_mode:=', use_sim_time,
                                               ' namespace:=', ns]),
-                'use_sim_time:=': use_sim_time,
+                'use_sim_time': use_sim_time,
             }],
             remappings=[
                 ("/tf", "tf"),
