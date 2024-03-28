@@ -18,10 +18,6 @@ def launch_setup(context, *args, **kwargs):
     world_file = LaunchConfiguration('sdf_file').perform(context)
     print(f'world_file: {world_file}')
 
-    ns_srt = namespace.perform(context)
-    ns_srt = f'/{ns_srt}' if ns_srt else ''
-    rae_name = 'rae' if ns_srt else ns_srt + '/rae'
-
     return [
         SetEnvironmentVariable(
             name='IGN_GAZEBO_RESOURCE_PATH',
@@ -72,7 +68,7 @@ def launch_setup(context, *args, **kwargs):
             namespace=LaunchConfiguration('namespace'),
             executable='create',
             arguments=[
-                "-name", rae_name,
+                "-name", "rea",
                 "-allow_renaming", "true",
                 '-topic', 'robot_description',
             ],
@@ -85,7 +81,7 @@ def launch_setup(context, *args, **kwargs):
             namespace=LaunchConfiguration('namespace'),
             executable='spawner',
             arguments=['diff_controller',
-                       '--controller-manager', f'{ns_srt}/controller_manager'],
+                       '--controller-manager', f'/controller_manager'],
         ),
 
         # Activate joint state broadcaster
@@ -94,7 +90,7 @@ def launch_setup(context, *args, **kwargs):
             executable='spawner',
             namespace=LaunchConfiguration('namespace'),
             arguments=['joint_state_broadcaster',
-                       '--controller-manager', f'{ns_srt}/controller_manager'],
+                       '--controller-manager', f'/controller_manager'],
         ),
 
         # Activate EKF
