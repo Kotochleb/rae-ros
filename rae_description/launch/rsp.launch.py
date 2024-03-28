@@ -27,10 +27,6 @@ def launch_setup(context, *args, **kwargs):
                                               ' namespace:=', ns]),
                 'use_sim_time': use_sim_time,
             }],
-            remappings=[
-                ("/tf", "tf"),
-                ("/tf_static", "tf_static"),
-            ],
         )
     ]
 

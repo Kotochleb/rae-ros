@@ -102,10 +102,6 @@ def launch_setup(context, *args, **kwargs):
             parameters=[{'use_sim_time': True},
                         os.path.join(get_package_share_directory(
                         'rae_hw'), 'config', 'ekf.yaml')],
-            remappings=[
-                ("/tf", "tf"),
-                ("/tf_static", "tf_static"),
-            ],
             output='screen',
         ),
 

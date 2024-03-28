@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <robot name="rae"
   xmlns:xacro="http://ros.org/wiki/xacro">
-  <xacro:macro name="rae_ros2_control" params="sim_mode namespace">
+  <xacro:macro name="rae_ros2_control" params="sim_mode ns">
     <ros2_control name="RAE" type="system">
       <xacro:unless value="${sim_mode}">
         <hardware>
@@ -39,7 +39,7 @@
           <plugin>ign_ros2_control/IgnitionSystem</plugin>
         </hardware>
       </xacro:if>
-      <joint name="left_wheel_joint">
+      <joint name="${ns}_left_wheel_joint">
         <command_interface name="velocity">
           <param name="min">-1.68</param>
           <param name="max">1.68</param>
@@ -47,7 +47,7 @@
         <state_interface name="velocity"/>
         <state_interface name="position"/>
       </joint>
-      <joint name="right_wheel_joint">
+      <joint name="${ns}_right_wheel_joint">
         <command_interface name="velocity">
           <param name="min">-1.68</param>
           <param name="max">1.68</param>
@@ -63,9 +63,8 @@
         <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
           <parameters>$(find rae_hw)/config/controller.yaml</parameters>
           <ros>
-            <namespace>${namespace}</namespace>
+            <namespace>${ns}</namespace>
             <remapping>diff_controller/cmd_vel_unstamped:=cmd_vel</remapping>
-            <remapping>/tf:=${namespace}/tf</remapping>
           </ros>
         </plugin>
       </gazebo>
