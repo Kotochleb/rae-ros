@@ -3,7 +3,8 @@
   gz_type_name: "ignition.msgs.Clock"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/right/image_raw"
+- ros_topic_name: "/rae/right/image_raw"
+  gz_topic_name: "/rae/right/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "ignition.msgs.Image"
   direction: GZ_TO_ROS
@@ -13,22 +14,37 @@
   gz_type_name: "ignition.msgs.CameraInfo"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/stereo_back/image_raw"
+- ros_topic_name: "/rae/stereo_front/image_raw"
+  gz_topic_name: "/rae/right/depth_image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "ignition.msgs.Image"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/stereo_back/camera_info"
+- ros_topic_name: "/rae/stereo_front/camera_info"
+  gz_topic_name: "/rae/right/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "ignition.msgs.CameraInfo"
   direction: GZ_TO_ROS
-  
-- topic_name: "/rae/stereo_front/image_raw"
+
+- ros_topic_name: "/rae/left_back/image_raw"
+  gz_topic_name: "/rae/left_back/image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "ignition.msgs.Image"
   direction: GZ_TO_ROS
 
-- topic_name: "/rae/stereo_front/camera_info"
+- topic_name: "/rae/left_back/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "ignition.msgs.CameraInfo"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/rae/stereo_back/image_raw"
+  gz_topic_name: "/rae/left_back/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "ignition.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/rae/stereo_back/camera_info"
+  gz_topic_name: "/rae/left_back/camera_info"
   ros_type_name: "sensor_msgs/msg/CameraInfo"
   gz_type_name: "ignition.msgs.CameraInfo"
   direction: GZ_TO_ROS
